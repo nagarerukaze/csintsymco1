@@ -56,16 +56,11 @@ public class MazeSolver {
                     isFound = Search(maze, n, x, y + 1);
                 }
             }
-
-             
-
-
         }
         
         if(isFound) {
             //edits pathway in 2d array
             maze[x][y] = '-';
-            
         }
 
         return isFound;
@@ -104,5 +99,14 @@ public class MazeSolver {
         
         System.out.println("START: " + start_coordinates[0] + start_coordinates[1]);
         System.out.println("GOAL: " + goal_coordinates[0] + goal_coordinates[1]);
+
+        System.out.println(Search(maze, n, start_coordinates[0], start_coordinates[1]));
+        
+        for(int i = 0; i < n; i++) {  
+            for(int j = 0; j < n; j++) {
+                System.out.print(maze[i][j]);
+            } 
+            System.out.println();
+        }
     }
 }
