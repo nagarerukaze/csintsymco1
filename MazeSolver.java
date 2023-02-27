@@ -7,6 +7,7 @@ public class MazeSolver {
     static int[] start_coordinates = new int[2];
     static String pathway = "";
 
+    //aaron's prototype
     public static boolean Search(char[][] maze, int n, int x, int y) {
         
         boolean isFound;
