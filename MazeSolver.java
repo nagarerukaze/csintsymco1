@@ -7,47 +7,65 @@ public class MazeSolver {
     static int[] start_coordinates = new int[2];
     static String pathway = "";
 
+    /*
+
+        MAZE LEGENDS
+
+        # - wall
+        . - space
+        G - goal
+        S - start
+        - - path
+        E - explored
+
+
+    */
+
     //aaron's prototype
     public static boolean Search(char[][] maze, int n, int x, int y) {
         
         boolean isFound;
 
-        if(maze[x][y] == 'G') {
+        if(maze[x][y] == 'G') { //if this style is the goal, stop dont look further and start tracing back
             isFound = true;
         }
         else {
-            if(x == 0) { //if at left edge
-                if(maze[x + 1][y] != '#' or maze[x +]) { //check right 
-                    Search(maze, n, x + 1, y);
-                }
+            isFound = false;
+            maze[x][y] = 'E';
+            
+            if(x > 0) {
+                if(maze[x - 1][y] != 'E' && maze[x - 1][y] != '#' && isFound == false) {
+                    isFound = Search(maze, n, x - 1, y);
+                } 
             }
-            else {
-                if() { //check right 
-                    Search(maze, n, x + 1, y);
-                }
-                if() { //check left 
-                    Search(maze, n, x - 1, y);
-                }
+
+            if(x < n - 1) {
+                if(maze[x + 1][y] != 'E' && maze[x + 1][y] != '#'  && isFound == false) {
+                    isFound = Search(maze, n, x + 1, y);
+                } 
+            }
+
+            if(y > 0) {
+                if(maze[x][y - 1] != 'E' && maze[x][y - 1] != '#' && isFound == false) {
+                    isFound = Search(maze, n, x, y - 1);
+                } 
             }
             
-
-            if(x == n) { //if at right edge
-
+            if(y < n - 1) {
+                if(maze[x][y + 1] != 'E' && maze[x][y + 1] != '#' && isFound == false) {
+                    isFound = Search(maze, n, x, y + 1);
+                }
             }
 
-            if(y == 0) { //if at top edge
+             
 
-            }
 
-            if(y == n) { //if at bottom edge
-
-            }
         }
-
         
         if(isFound) {
-            //append coordinates to pathway
-            pathway = pathway + x + " " + y "\n";
+            //edits pathway in 2d array
+            maze[x][y] = '-';
+            
         }
 
         return isFound;
