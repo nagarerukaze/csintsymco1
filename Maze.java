@@ -3,9 +3,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Maze {
-    private Cell cell = new Cell();
-    private int n;
-    private char[][] maze;
+    public Cell cell = new Cell();
+    public int n;
+    public char[][] maze;
     public int[] start_coordinates;
 
     public Maze(File input) throws FileNotFoundException {
@@ -36,7 +36,7 @@ public class Maze {
         return false;
     }
 
-    public boolean travelDown(int row, int col) {
+    public boolean travel(int row, int col) {
         if(row < this.n && col < this.n) {
             if(this.maze[row][col] != cell.WALL) {
                 this.maze[row][col] = cell.EXPLORED;
