@@ -1,4 +1,4 @@
-public class Cell {
+public final class Cell {
     public final char START = 'S';
     public final char GOAL = 'G';
     public final char WALL = '#';

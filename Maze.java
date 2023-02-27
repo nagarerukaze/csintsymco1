@@ -6,44 +6,35 @@ public class Maze {
     public Cell cell = new Cell();
     public int n;
     public char[][] maze;
-    public int[] start_coordinates;
+    public int[] start_coordinates = new int[2];
+    public int[] goal_coordinates = new int[2];
 
-    public Maze(File input) throws FileNotFoundException {
-        Scanner sc = new Scanner(input);
-        this.n = sc.nextInt();
-        this.maze = new char[n][n];
+    public Maze() {
+        Scanner sc;
+        try {
+            sc = new Scanner(new File("maze.txt"));
+            this.n = sc.nextInt();
+            this.maze = new char[n][n];
 
-        for(int i = 0; i < n; i++) {
-            char[] str = sc.next().toCharArray();
+            for(int i = 0; i < n; i++) {
+                char[] str = sc.next().toCharArray();
 
-            for(int j = 0; j < n; j++) {
-                maze[i][j] = str[j];
+                for(int j = 0; j < n; j++) {
+                    this.maze[i][j] = str[j];
 
-                if(str[j] == cell.START) {
-                    start_coordinates[0] = i;
-                    start_coordinates[1] = j;
+                    if(str[j] == cell.START) {
+                        this.start_coordinates[0] = i;
+                        this.start_coordinates[1] = j;
+                    } else if(str[j] == cell.GOAL) {
+                        this.goal_coordinates[0] = i;
+                        this.goal_coordinates[1] = j;
+                    }
                 }
             }
-        }
-            
-        sc.close();
-    }
-
-    public boolean isEnd(int row, int col) {
-        if(this.maze[row][col] == cell.GOAL) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean travel(int row, int col) {
-        if(row < this.n && col < this.n) {
-            if(this.maze[row][col] != cell.WALL) {
-                this.maze[row][col] = cell.EXPLORED;
-                return true;
-            }
-        }
-        return false;
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } 
     }
 
     public void printMaze() {
