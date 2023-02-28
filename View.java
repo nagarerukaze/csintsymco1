@@ -39,7 +39,7 @@ public class View extends JFrame{
         });
         timer.start();
         // TODO: Place a button user can click to start the search
-        // button = new JButton();
+        JButton button = new JButton();
 
         // TODO: Output maze with highlighted path, and circle going through all explored states
         // The animation skips the ones we already explored
