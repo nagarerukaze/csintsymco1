@@ -1,13 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class View extends JFrame{
     private Cell cell = new Cell();
     private Maze maze = new Maze();
+
+    private JFrame popup = new JFrame();
     private int exploredIndex = 0;
     //JButton button;
 
@@ -15,11 +17,27 @@ public class View extends JFrame{
         setTitle("Maze Bot");
         setSize(500, 500);
         // validate();
+        Timer timer = new Timer (1000,null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        DFS.Search(maze.maze, maze.n, maze.start_coordinates[0], maze.start_coordinates[1]);
-
+        boolean finished = DFS.Search(maze.maze, maze.n, maze.start_coordinates[0], maze.start_coordinates[1]);
+        timer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(exploredIndex < DFS.explored.size() - 1) {
+                    exploredIndex += 1;
+                    repaint();
+                }
+                else{
+                    timer.stop();
+                    if (!finished)
+                        JOptionPane.showMessageDialog(popup,"This is an impossible maze!","Oh no!",JOptionPane.WARNING_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(popup,"You have reached the goal!","GOAL!",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+        timer.start();
         // TODO: Place a button user can click to start the search
         // button = new JButton();
 
@@ -31,8 +49,8 @@ public class View extends JFrame{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.translate(50,50);
-
+        int width = 30;
+        g.translate(width+10,width+10);
         // Maze
         for(int i = 0; i < maze.n; i++) {
             for(int j = 0; j < maze.n; j++) {
@@ -49,22 +67,22 @@ public class View extends JFrame{
                 }
                 
                 g.setColor(color);
-                g.fillRect(50 * j, 50 * i, 50, 50);
+                g.fillRect(width * j, width * i, width, width);
 
                 g.setColor(Color.BLACK);
-                g.drawRect(50 * j, 50 * i, 50, 50);
+                g.drawRect(width * j, width * i, width, width);
             }
         }
         
         // Draw Path
-        for(Position p : DFS.path) {
-            g.setColor(Color.BLUE);
-            g.drawRect(p.col * 50, p.row * 50, 50, 50);
+        for(int i = 1; i < DFS.path.size()-1; i++) {
+            g.setColor(Color.blue);
+            g.fillRect(DFS.path.get(i).col * width, DFS.path.get(i).row * width, width, width);
         }
 
         // Exploring
-        g.setColor(Color.RED);
-        g.fillRect(DFS.explored.get(exploredIndex).col * 50, DFS.explored.get(exploredIndex).row * 50, 50, 50);
+        g.setColor(Color.orange);
+        g.fillOval(DFS.explored.get(exploredIndex).col * width, DFS.explored.get(exploredIndex).row * width, width, width);
     }
 
     @Override
@@ -97,5 +115,5 @@ public class View extends JFrame{
         });
          
     }
-    
+
 }

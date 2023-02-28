@@ -72,7 +72,7 @@ public class MazeSolver {
     }
 
     public static void main(String[] args) throws Exception {
-        File input = new File("maze.txt");
+        File input = new File("blocked_tc.txt");
         Scanner sc = new Scanner(input);
         int n = sc.nextInt();
         maze = new char[n][n];
