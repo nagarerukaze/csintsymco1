@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 public class View extends JFrame{
@@ -42,9 +41,6 @@ public class View extends JFrame{
         if (JOptionPane.showOptionDialog(null,"Welcome to MazeBot","MAZEBOT",JOptionPane.YES_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options1,options1[0]) == 0){
             timer.start();
         }
-        // TODO: Output maze with highlighted path, and circle going through all explored states
-        // The animation skips the ones we already explored
-        // If no path found: Add a pop up that says "No solution found!"
     }
 
     @Override
@@ -78,41 +74,21 @@ public class View extends JFrame{
         // Draw Path
         if (!timer.isRunning())
             for(int i = 1; i < DFS.path.size()-1; i++) {
-                g.setColor(Color.blue);
+                g.setColor(Color.GREEN);
                 g.fillRect(DFS.path.get(i).col * width, DFS.path.get(i).row * width, width, width);
             }
 
         // Mark Explored
         for(int i = 0; i < exploredCount; i++) {
-            g.setColor(Color.ORANGE);
+            g.setColor(Color.RED);
             g.drawRect(DFS.explored.get(i).col * width, DFS.explored.get(i).row * width, width, width);
         }
 
         // Exploring
-        g.setColor(Color.ORANGE);
+        g.setColor(Color.RED);
         g.drawRect(DFS.explored.get(exploredIndex).col * width, DFS.explored.get(exploredIndex).row * width, width, width);
         g.fillOval(DFS.explored.get(exploredIndex).col * width, DFS.explored.get(exploredIndex).row * width, width, width);
         exploredCount++;
-    }
-
-    @Override
-    protected void processKeyEvent(KeyEvent key) {
-        if(key.getID() != KeyEvent.KEY_PRESSED) {
-            return;
-        }
-
-        if(key.getKeyCode() == KeyEvent.VK_LEFT) {
-            // LEFT ARROW KEY
-            if(exploredIndex > 0) {
-                exploredIndex -= 1;
-            }
-        } else if(key.getKeyCode() == KeyEvent.VK_RIGHT) {
-            // RIGHT ARROW KEY
-            if(exploredIndex < DFS.explored.size() - 1) {
-                exploredIndex += 1;
-            }
-        }
-        repaint(); 
     }
     
     public static void main(String[] args) {
