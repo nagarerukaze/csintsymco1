@@ -30,7 +30,7 @@ public class View extends JFrame{
                     repaint();
                     timer.stop();
                     if (!finished)
-                        JOptionPane.showMessageDialog(null,"<html>his is an impossible maze!<br/>Total number of states explored: "+exploredCount+"<html>","Oh no!",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"<html>This is an impossible maze!<br/>Total number of states explored: "+exploredCount+"<html>","Oh no!",JOptionPane.WARNING_MESSAGE);
                     else
                         JOptionPane.showMessageDialog(null,"<html>You have reached the goal!<br/>Total number of states explored: "+exploredCount+"<html>","GOAL!",JOptionPane.INFORMATION_MESSAGE);
                 }
