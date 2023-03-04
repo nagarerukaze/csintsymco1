@@ -4,21 +4,22 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class View extends JFrame{
-    private Cell cell = new Cell();
     private Maze maze = new Maze();
     private int exploredIndex = 0;
     private int exploredCount = 0;
-    int mazeWidth = maze.n * 50;
-    int mazeHeight = maze.n * 50;
-    boolean finished = true;
-    Timer timer = new Timer (1000,null);
+    
+    private int n = maze.getN();
+    private boolean finished = true;
+    private Timer timer = new Timer (1000,null);
+
     public View() {
         setTitle("Maze Bot");
-        setSize(mazeWidth, mazeHeight);
-        validate();
+        setSize(n * 50, n * 50);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        finished = DFS.Search(maze.maze, maze.n, maze.start_coordinates[0], maze.start_coordinates[1]);
+
+        finished = DFS.Search(maze.maze, n, maze.getStartRow(), maze.getStartCol());
+
         timer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,6 +37,7 @@ public class View extends JFrame{
                 }
             }
         });
+
         // TODO: Place a button user can click to start the search
         Object [] options1 = {"Start the Search"};
         if (JOptionPane.showOptionDialog(null,"Welcome to MazeBot","MAZEBOT",JOptionPane.YES_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options1,options1[0]) == 0){
@@ -48,16 +50,17 @@ public class View extends JFrame{
         super.paint(g);
         int width = 30;
         g.translate(width+10,width+10);
+        
         // Maze
-        for(int i = 0; i < maze.n; i++) {
-            for(int j = 0; j < maze.n; j++) {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
                 Color color;
                 
-                if(maze.maze[i][j] == cell.WALL) {
+                if(maze.maze[i][j] == '#') {
                     color = Color.BLACK;
-                } else if(i == maze.goal_coordinates[0] && j == maze.goal_coordinates[1]) {
+                } else if(i == maze.getEndRow() && j == maze.getEndCol()) {
                     color = Color.GREEN;
-                } else if(i == maze.start_coordinates[0] && j == maze.start_coordinates[1]) {
+                } else if(i == maze.getStartRow() && j == maze.getStartCol()) {
                     color = Color.PINK;
                 } else {
                     color = Color.WHITE;
@@ -75,19 +78,19 @@ public class View extends JFrame{
         if (!timer.isRunning())
             for(int i = 1; i < DFS.path.size()-1; i++) {
                 g.setColor(Color.GREEN);
-                g.fillRect(DFS.path.get(i).col * width, DFS.path.get(i).row * width, width, width);
+                g.fillRect(DFS.path.get(i).getCol() * width, DFS.path.get(i).getRow() * width, width, width);
             }
 
         // Mark Explored
         for(int i = 0; i < exploredCount; i++) {
             g.setColor(Color.RED);
-            g.drawRect(DFS.explored.get(i).col * width, DFS.explored.get(i).row * width, width, width);
+            g.drawRect(DFS.explored.get(i).getCol() * width, DFS.explored.get(i).getRow() * width, width, width);
         }
 
         // Exploring
         g.setColor(Color.RED);
-        g.drawRect(DFS.explored.get(exploredIndex).col * width, DFS.explored.get(exploredIndex).row * width, width, width);
-        g.fillOval(DFS.explored.get(exploredIndex).col * width, DFS.explored.get(exploredIndex).row * width, width, width);
+        g.drawRect(DFS.explored.get(exploredIndex).getCol() * width, DFS.explored.get(exploredIndex).getRow() * width, width, width);
+        g.fillOval(DFS.explored.get(exploredIndex).getCol() * width, DFS.explored.get(exploredIndex).getRow() * width, width, width);
         exploredCount++;
     }
     
@@ -98,8 +101,6 @@ public class View extends JFrame{
                 View view = new View();
                 view.setVisible(true);
             }
-        });
-         
+        });    
     }
-
 }

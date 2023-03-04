@@ -3,11 +3,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Maze {
-    public Cell cell = new Cell();
-    public int n;
+    private int n;
     public char[][] maze;
-    public int[] start_coordinates = new int[2];
-    public int[] goal_coordinates = new int[2];
+    private int[] start_coordinates = new int[2];
+    private int[] goal_coordinates = new int[2];
 
     public Maze() {
         Scanner sc;
@@ -22,10 +21,10 @@ public class Maze {
                 for(int j = 0; j < n; j++) {
                     this.maze[i][j] = str[j];
 
-                    if(str[j] == cell.START) {
+                    if(str[j] == 'S') {
                         this.start_coordinates[0] = i;
                         this.start_coordinates[1] = j;
-                    } else if(str[j] == cell.GOAL) {
+                    } else if(str[j] == 'G') {
                         this.goal_coordinates[0] = i;
                         this.goal_coordinates[1] = j;
                     }
@@ -37,12 +36,23 @@ public class Maze {
         } 
     }
 
-    public void printMaze() {
-        for(int i = 0; i < this.n; i++){
-            for(int j = 0; j < this.n; j++) {
-                System.out.print(this.maze[i][j]);
-            }
-            System.out.println();
-        }
+    public int getN() {
+        return this.n;
+    }
+
+    public int getStartRow() {
+        return this.start_coordinates[0];
+    }
+
+    public int getStartCol() {
+        return this.start_coordinates[1];
+    }
+
+    public int getEndRow() {
+        return this.goal_coordinates[0];
+    }
+
+    public int getEndCol() {
+        return this.goal_coordinates[1];
     }
 }
