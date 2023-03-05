@@ -1,90 +1,97 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class View extends JFrame{
-    private Cell cell = new Cell();
     private Maze maze = new Maze();
     private int exploredIndex = 0;
-    //JButton button;
+    private int exploredCount = 0;
+    
+    private int n = maze.getN();
+    private boolean finished = true;
+    private Timer timer = new Timer (1000,null);
 
     public View() {
         setTitle("Maze Bot");
-        setSize(500, 500);
-        // validate();
+        setSize(n * 50, n * 50);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        DFS.Search(maze.maze, maze.n, maze.start_coordinates[0], maze.start_coordinates[1]);
+        finished = DFS.Search(maze.maze, n, maze.getStartRow(), maze.getStartCol());
+
+        timer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(exploredIndex < DFS.explored.size() - 1) {
+                    exploredIndex += 1;
+                    repaint();
+                }
+                else{
+                    repaint();
+                    timer.stop();
+                    if (!finished)
+                        JOptionPane.showMessageDialog(null,"<html>This is an impossible maze!<br/>Total number of states explored: "+exploredCount+"<html>","Oh no!",JOptionPane.WARNING_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(null,"<html>You have reached the goal!<br/>Total number of states explored: "+exploredCount+"<html>","GOAL!",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         // TODO: Place a button user can click to start the search
-        // button = new JButton();
-
-        // TODO: Output maze with highlighted path, and circle going through all explored states
-        // The animation skips the ones we already explored
-        // If no path found: Add a pop up that says "No solution found!"
+        Object [] options1 = {"Start the Search"};
+        if (JOptionPane.showOptionDialog(null,"Welcome to MazeBot","MAZEBOT",JOptionPane.YES_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options1,options1[0]) == 0){
+            timer.start();
+        }
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.translate(50,50);
-
+        int width = 30;
+        g.translate(width+10,width+10);
+        
         // Maze
-        for(int i = 0; i < maze.n; i++) {
-            for(int j = 0; j < maze.n; j++) {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
                 Color color;
                 
-                if(maze.maze[i][j] == cell.WALL) {
+                if(maze.maze[i][j] == '#') {
                     color = Color.BLACK;
-                } else if(i == maze.goal_coordinates[0] && j == maze.goal_coordinates[1]) {
+                } else if(i == maze.getEndRow() && j == maze.getEndCol()) {
                     color = Color.GREEN;
-                } else if(i == maze.start_coordinates[0] && j == maze.start_coordinates[1]) {
+                } else if(i == maze.getStartRow() && j == maze.getStartCol()) {
                     color = Color.PINK;
                 } else {
                     color = Color.WHITE;
                 }
                 
                 g.setColor(color);
-                g.fillRect(50 * j, 50 * i, 50, 50);
+                g.fillRect(width * j, width * i, width, width);
 
                 g.setColor(Color.BLACK);
-                g.drawRect(50 * j, 50 * i, 50, 50);
+                g.drawRect(width * j, width * i, width, width);
             }
         }
         
         // Draw Path
-        for(Position p : DFS.path) {
-            g.setColor(Color.BLUE);
-            g.drawRect(p.col * 50, p.row * 50, 50, 50);
+        if (!timer.isRunning())
+            for(int i = 1; i < DFS.path.size()-1; i++) {
+                g.setColor(Color.GREEN);
+                g.fillRect(DFS.path.get(i).getCol() * width, DFS.path.get(i).getRow() * width, width, width);
+            }
+
+        // Mark Explored
+        for(int i = 0; i < exploredCount; i++) {
+            g.setColor(Color.RED);
+            g.drawRect(DFS.explored.get(i).getCol() * width, DFS.explored.get(i).getRow() * width, width, width);
         }
 
         // Exploring
         g.setColor(Color.RED);
-        g.fillRect(DFS.explored.get(exploredIndex).col * 50, DFS.explored.get(exploredIndex).row * 50, 50, 50);
-    }
-
-    @Override
-    protected void processKeyEvent(KeyEvent key) {
-        if(key.getID() != KeyEvent.KEY_PRESSED) {
-            return;
-        }
-
-        if(key.getKeyCode() == KeyEvent.VK_LEFT) {
-            // LEFT ARROW KEY
-            if(exploredIndex > 0) {
-                exploredIndex -= 1;
-            }
-        } else if(key.getKeyCode() == KeyEvent.VK_RIGHT) {
-            // RIGHT ARROW KEY
-            if(exploredIndex < DFS.explored.size() - 1) {
-                exploredIndex += 1;
-            }
-        }
-        repaint(); 
+        g.drawRect(DFS.explored.get(exploredIndex).getCol() * width, DFS.explored.get(exploredIndex).getRow() * width, width, width);
+        g.fillOval(DFS.explored.get(exploredIndex).getCol() * width, DFS.explored.get(exploredIndex).getRow() * width, width, width);
+        exploredCount++;
     }
     
     public static void main(String[] args) {
@@ -94,8 +101,6 @@ public class View extends JFrame{
                 View view = new View();
                 view.setVisible(true);
             }
-        });
-         
+        });    
     }
-    
 }
