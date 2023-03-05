@@ -11,7 +11,7 @@ public class Maze {
     public Maze() {
         Scanner sc;
         try {
-            sc = new Scanner(new File("blocked_tc.txt"));
+            sc = new Scanner(new File("maze.txt"));
             this.n = sc.nextInt();
             this.maze = new char[n][n];
 
