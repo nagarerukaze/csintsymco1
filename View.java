@@ -38,7 +38,6 @@ public class View extends JFrame{
             }
         });
 
-        // TODO: Place a button user can click to start the search
         Object [] options1 = {"Start the Search"};
         if (JOptionPane.showOptionDialog(null,"Welcome to MazeBot","MAZEBOT",JOptionPane.YES_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options1,options1[0]) == 0){
             timer.start();
