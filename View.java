@@ -10,7 +10,7 @@ public class View extends JFrame{
     
     private int n = maze.getN();
     private boolean finished = true;
-    private Timer timer = new Timer (1000 * (n/16) + 400,null);
+    private Timer timer = new Timer (200,null);
 
     public View() {
         setTitle("Maze Bot");
