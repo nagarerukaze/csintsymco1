@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Maze {
     private int n;
@@ -9,16 +12,16 @@ public class Maze {
     private int[] goal_coordinates = new int[2];
 
     public Maze() {
-        BufferedReader brReader;
+        Scanner sc;
 
         try {
-            brReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/" + "maze.txt")));
+            sc = new Scanner(new File("maze.txt"));
     
-            this.n = brReader.read();
+            this.n = sc.nextInt();
             this.maze = new char[n][n];
 
             for(int i = 0; i < n; i++) {
-                char[] str = brReader.readLine().toCharArray();
+                char[] str = sc.next().toCharArray();
 
                 for(int j = 0; j < n; j++) {
                     this.maze[i][j] = str[j];
@@ -32,7 +35,7 @@ public class Maze {
                     }
                 }
             }
-            brReader.close();
+            sc.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
