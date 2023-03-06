@@ -10,11 +10,11 @@ public class View extends JFrame{
     
     private int n = maze.getN();
     private boolean finished = true;
-    private Timer timer = new Timer (1000,null);
+    private Timer timer = new Timer (1000 * (n/16) + 400,null);
 
     public View() {
         setTitle("Maze Bot");
-        setSize(n * 50, n * 50);
+        setSize(1920, 1080);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -48,8 +48,9 @@ public class View extends JFrame{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        int width = 30;
-        g.translate(width+10,width+10);
+        double scaleFactor = .3 + (10/n);
+        int width = (int)Math.ceil(40 * scaleFactor);
+        g.translate(width+30,width+30);
         
         // Maze
         for(int i = 0; i < n; i++) {
