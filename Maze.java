@@ -11,18 +11,18 @@ public class Maze {
     public Maze() {
         BufferedReader brReader;
 
-        //try {
-            //brReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/" + "maze.txt")));
+        try {
+            brReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/" + "maze.txt")));
     
-            this.n = 3;//brReader.read();
+            this.n = brReader.read();
             this.maze = new char[n][n];
 
             for(int i = 0; i < n; i++) {
-                //char[] str = brReader.readLine().toCharArray();
+                char[] str = brReader.readLine().toCharArray();
 
                 for(int j = 0; j < n; j++) {
-                    this.maze[i][j] = '.';//str[j];
-                    /*
+                    this.maze[i][j] = str[j];
+                    
                     if(str[j] == 'S') {
                         this.start_coordinates[0] = i;
                         this.start_coordinates[1] = j;
@@ -30,14 +30,13 @@ public class Maze {
                         this.goal_coordinates[0] = i;
                         this.goal_coordinates[1] = j;
                     }
-                    */
                 }
             }
-            //brReader.close();
-        //} catch (IOException e) {
+            brReader.close();
+        } catch (IOException e) {
             // TODO Auto-generated catch block
-            //e.printStackTrace();
-        //}
+            e.printStackTrace();
+        }
     }
 
     public int getN() {
